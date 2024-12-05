@@ -15,13 +15,13 @@ pipeline {
 
         stage('Build') {
             steps {
-                sh 'sudo docker build -t simulator:latest .'
+                sh 'docker build -t simulator:latest .'
             }
         }
 
         stage('deploy') {
             steps {
-                sh 'sudo docker-compose up -d'
+                sh 'docker-compose up -d'
             }
         }
     }
@@ -41,7 +41,7 @@ pipeline {
         always {
             // 始终执行，清理悬挂的镜像
             echo 'Cleaning up dangling images...'
-            sh 'sudo docker image prune -f'
+            sh 'docker image prune -f'
         }
     }
 }
