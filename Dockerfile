@@ -11,8 +11,6 @@ RUN go mod tidy && go build -o main .
 
 FROM ubuntu:latest
 
-WORKDIR /app
+COPY --from=builder /app/main /app/main
 
-COPY --from=builder /app/main .
-
-CMD ["main"]
+CMD ["/app/main"]
