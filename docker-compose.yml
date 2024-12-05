@@ -1,0 +1,10 @@
+services:
+  simulator:
+    image: simulator:latest
+    container_name: simulator
+    ports:
+      - "8081:8081"
+    restart: always
+    volumes:
+      - /home/ubuntu/apps/simulator/logs:/app/logs
+      - /home/ubuntu/apps/simulator/static:/app/static

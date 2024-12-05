@@ -3,5 +3,9 @@ package main
 import "github.com/gin-gonic/gin"
 
 func main() {
-	gin.Default()
+	engine := gin.Default()
+	engine.GET("/ping", func(ctx *gin.Context) {
+		ctx.Writer.WriteString("success")
+		return
+	})
 }
