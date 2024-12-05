@@ -9,7 +9,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func TimeOut(ctx *gin.Context) {
+func Timeout(ctx *gin.Context) {
 	timeoutCtx, cancel := context.WithTimeout(ctx, time.Second*3)
 	defer cancel()
 
