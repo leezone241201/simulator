@@ -7,4 +7,5 @@ func main() {
 	engine.GET("/ping", func(ctx *gin.Context) {
 		ctx.Writer.WriteString("success")
 	})
+	engine.Run(":9001")
 }
