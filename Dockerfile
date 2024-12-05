@@ -4,10 +4,10 @@ WORKDIR /app
 
 COPY . .
 
-ENV GOPROXY=GOPROXY=https://goproxy.cn,direct
+ENV GOPROXY=https://goproxy.cn,direct
 ENV GO111MODULE=on
 
-RUN go build -o main .
+RUN go mod tidy && go build -o main .
 
 FROM ubuntu:latest
 
