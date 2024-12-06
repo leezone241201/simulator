@@ -16,6 +16,5 @@ WORKDIR /app
 COPY --from=builder /app/main main
 COPY ./config/conf.toml config/conf.toml
 COPY ./simulator.db simulator.db
-RUN ls -l
 
-CMD ["main"]
+CMD ["./main"]
