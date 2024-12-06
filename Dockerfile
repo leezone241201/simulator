@@ -8,7 +8,7 @@ ENV GO111MODULE=on
 RUN go mod tidy 
 
 COPY . .
-
+RUN ls -l
 RUN go build -o main .
 
 FROM ubuntu:latest
