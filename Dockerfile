@@ -8,14 +8,14 @@ ENV GO111MODULE=on
 RUN go mod tidy 
 
 COPY . .
-RUN ls -l
 RUN go build -o main .
 
 FROM ubuntu:latest
+WORKDIR /app
 
-COPY --from=builder /app/main /app/main
-COPY --from=builder /app/config/conf.toml /app/config/conf.toml
-COPY --from=builder /app/simulator.db /app/simulator.db
+COPY --from=builder /app/main main
+COPY ./config/conf.toml config/conf.toml
+COPY ./simulator.db simulator.db
 RUN ls -l
 
-CMD ["/app/main"]
+CMD ["main"]
