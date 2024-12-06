@@ -14,7 +14,7 @@ RUN go build -o main .
 FROM ubuntu:latest
 
 COPY --from=builder /app/main /app/main
-COPY ./config/conf.toml /app/config/conf.toml
-COPY ./simulator.db /app/simulator.db
+COPY config/conf.toml /app/config/conf.toml
+COPY simulator.db /app/simulator.db
 
 CMD ["/app/main"]
