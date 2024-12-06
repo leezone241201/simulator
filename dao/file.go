@@ -1,4 +1,9 @@
 package dao
 
-type FileDb struct {
+type FileDB interface {
+	CreateFile() error
+	DeleteFile() error
+}
+
+type DefaultFileDB struct {
 }

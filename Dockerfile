@@ -16,5 +16,6 @@ FROM ubuntu:latest
 COPY --from=builder /app/main /app/main
 COPY --from=builder /app/config/conf.toml /app/config/conf.toml
 COPY --from=builder /app/simulator.db /app/simulator.db
+RUN ls -l
 
 CMD ["/app/main"]

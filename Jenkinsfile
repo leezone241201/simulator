@@ -15,7 +15,6 @@ pipeline {
 
         stage('Build') {
             steps {
-                sh 'ls -l'
                 sh 'docker build -t simulator:latest .'
             }
         }

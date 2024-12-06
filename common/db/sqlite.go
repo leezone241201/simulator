@@ -16,7 +16,7 @@ func InitSqlite(conf config.Sqlite) {
 	var err error
 	SqliteDB, err = gorm.Open(sqlite.Open(conf.Path))
 	if err != nil {
-		logger.Logger.ErrorWithStack("init database error ", err, conf)
+		logger.Logger.ErrorWithStack("init database error", err, conf)
 		os.Exit(-1)
 	}
 }
