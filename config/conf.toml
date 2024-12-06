@@ -1,0 +1,19 @@
+[logger]
+# 日志打印等级,有 debug info warnning error panic fatal, 默认为info
+level = "debug"
+# 日志类型,有development production
+type = "development"
+# 日志保存路径
+path = "logs/simulator.log"
+# 保留最大文件大小MB
+MaxSize = 100
+# 保留的最大备份数
+MaxBackups = 12
+# 保留的最大天数  
+MaxAge    = 30 
+# 是否压缩旧日志
+Compress   = true 
+
+[sqlite]
+# 数据库文件路径
+path = "simulator.db"
