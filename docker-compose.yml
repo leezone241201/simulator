@@ -10,4 +10,3 @@ services:
       - /home/ubuntu/apps/simulator/static:/app/static
       - /home/ubuntu/apps/simulator/simulator.db:/app/simulator.db
       - /home/ubuntu/apps/simulator/config/conf.toml:/app/config/conf.toml
-      - /home/ubuntu/apps/simulator/logs:/app/logs
