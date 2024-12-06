@@ -2,12 +2,14 @@ FROM golang:1.22.1 AS builder
 
 WORKDIR /app
 
-COPY . .
-
+COPY go.mod go.sum ./
 ENV GOPROXY=https://goproxy.cn,direct
 ENV GO111MODULE=on
+RUN go mod tidy 
 
-RUN go mod tidy && go build -o main .
+COPY . .
+
+RUN go build -o main .
 
 FROM ubuntu:latest
 
