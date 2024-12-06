@@ -12,5 +12,6 @@ RUN go mod tidy && go build -o main .
 FROM ubuntu:latest
 
 COPY --from=builder /app/main /app/main
+COPY ./config/config.toml /app/config/config.toml
 
 CMD ["/app/main"]
