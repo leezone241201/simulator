@@ -42,6 +42,11 @@ func Upload(ctx *gin.Context) {
 			})
 			continue
 		}
+
+		res = append(res, apistruct.UploadResponse{
+			FileName: file.Filename,
+			Result:   "上传成功",
+		})
 	}
 
 	response.Success(ctx, syserror.SuccessCode, "上传成功!", res)
