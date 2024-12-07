@@ -21,7 +21,7 @@ func Timeout(ctx *gin.Context) {
 
 	select {
 	case <-timeoutCtx.Done():
-		response.Failure(ctx, syserror.TimeOutCode, syserror.ErrMap[syserror.TimeOutCode])
+		response.Failure(ctx, syserror.TimeOutErrCode, syserror.ErrMap[syserror.TimeOutErrCode])
 		ctx.Abort()
 	case <-success:
 		// TODO,记录API操作日志
