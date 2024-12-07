@@ -1,4 +1,4 @@
-package requests
+package apistruct
 
 type FileRequest struct {
 }
