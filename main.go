@@ -10,6 +10,7 @@ import (
 	"github/leezone/simulator/common/logger"
 	"github/leezone/simulator/config"
 	"github/leezone/simulator/middleware"
+	"github/leezone/simulator/svc"
 )
 
 func main() {
@@ -19,6 +20,7 @@ func main() {
 
 	logger.InitLogger(conf.Logger)
 	db.InitSqlite(conf.Sqlite)
+	svc.InitSvc()
 
 	engine := gin.Default()
 	engine.Use(middleware.Timeout)
