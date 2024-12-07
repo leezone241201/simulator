@@ -20,7 +20,7 @@ func InitSvc() {
 	}
 
 	Svc.FileDB.AutoMigrate()
-	Svc.FileDB.AutoMigrate()
+	Svc.ServerTemplateDB.AutoMigrate()
 
 	logger.Logger.Info("init server context success")
 }
