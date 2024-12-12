@@ -14,7 +14,7 @@ type ZipDecompressor struct{}
 func (z *ZipDecompressor) Decompress(file *os.File, dest string, iterateFuncs ...func(FileContext, io.Reader) error) (interface{}, error) {
 	zipReader, err := zip.OpenReader(file.Name())
 	if err != nil {
-		logger.Logger.ErrorWithStack("open file error", err, file)
+		logger.Logger.ErrorWithStack(OpenFileErr, err, file)
 		return nil, err
 	}
 	defer zipReader.Close()
@@ -23,7 +23,8 @@ func (z *ZipDecompressor) Decompress(file *os.File, dest string, iterateFuncs ..
 	var singleResult DecompressResult
 	var ctx FileContext
 
-	for _, zipFile := range zipReader.File {
+	ctx.TotalFileCount = len(zipReader.File)
+	for i, zipFile := range zipReader.File {
 		singleResult.FileName = zipFile.Name
 
 		file, err := zipFile.Open()
@@ -35,20 +36,24 @@ func (z *ZipDecompressor) Decompress(file *os.File, dest string, iterateFuncs ..
 
 		ctx.IsDir = zipFile.FileInfo().IsDir()
 		ctx.Path = fmt.Sprintf("%s%c%s", dest, os.PathSeparator, singleResult.FileName)
+		ctx.CurrentIndex = i
 
 		for _, iterateFunc := range iterateFuncs {
 			err = iterateFunc(ctx, file)
 			if err != nil {
+				file.Close()
 				singleResult.Msg = err.Error()
 				logger.Logger.ErrorWithStack("exec customer function error", err, nil)
 				goto OneFinished
 			}
 		}
 
+		file.Close()
 		singleResult.Msg = ArchiveFileSuccess
 
 	OneFinished:
 		results = append(results, singleResult)
 	}
+
 	return results, nil
 }

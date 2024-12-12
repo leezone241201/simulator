@@ -3,10 +3,11 @@ package decompress
 import (
 	"context"
 	"errors"
-	"github/leezone/simulator/common/logger"
 	"io"
 	"os"
 	"sync"
+
+	"github/leezone/simulator/common/logger"
 )
 
 var ErrNotSupportDepression = errors.New("do not support decompression")
@@ -15,13 +16,17 @@ const (
 	ArchiveFileSuccess = "archive file success"
 	OpenFileErr        = "open archive file error"
 	CreateFileErr      = "create file error"
-	SaveFileErr        = "save file err"
+	SaveFileErr        = "save file error"
+	GetHeaderErr       = "get file header error"
+	CustomerExecErr    = "exec customer function error"
 )
 
 type FileContext struct {
-	IsDir bool
-	Path  string
-	Ctx   context.Context
+	IsDir          bool
+	Path           string
+	TotalFileCount int
+	CurrentIndex   int
+	Ctx            context.Context
 }
 
 type DecompressResult struct {
@@ -51,8 +56,8 @@ func (d *DecompressionContext) Decompress(file *os.File, dest string, iterateFun
 		return nil, ErrNotSupportDepression
 	}
 
-	funcs := make([]func(FileContext, io.Reader) error, len(iterateFuncs)+1)
-	funcs[0] = saveFile
+	funcs := make([]func(FileContext, io.Reader) error, 0, len(iterateFuncs)+1)
+	funcs = append(funcs, saveFile)
 	copy(funcs[1:], iterateFuncs)
 
 	return d.strategy.Decompress(file, dest, funcs...)
@@ -62,8 +67,12 @@ func GetDecompressorByExtension(ext string) (Decompressor, error) {
 	switch ext {
 	case ".zip":
 		return &ZipDecompressor{}, nil
+	case ".tar":
+		return &TarDecompressor{}, nil
+	case ".tar.gz":
+		return &TarGzDecompressor{}, nil
 	default:
-		return nil, nil
+		return nil, ErrNotSupportDepression
 	}
 }
 
@@ -74,6 +83,7 @@ func saveFile(ctx FileContext, reader io.Reader) error {
 			logger.Logger.ErrorWithStack(CreateFileErr, err, ctx)
 			return errors.New(CreateFileErr)
 		}
+		return nil
 	}
 
 	file, err := os.Create(ctx.Path)
