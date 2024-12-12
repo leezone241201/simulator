@@ -3,9 +3,10 @@ package decompress
 import (
 	"archive/tar"
 	"fmt"
-	"github/leezone/simulator/common/logger"
 	"io"
 	"os"
+
+	"github/leezone/simulator/common/logger"
 )
 
 type TarDecompressor struct{}
