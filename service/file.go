@@ -59,6 +59,13 @@ func mergeFiles(dstDirName, dstFileName string, files []string) (string, error) 
 	var tempFile *os.File
 	var err error
 	defer func() {
+		for _, fileName := range files {
+			rmErr := os.Remove(fileName)
+			if rmErr != nil {
+				logger.Logger.ErrorWithStack(ErrMergeFile.Error(), err, fileName)
+			}
+		}
+
 		if err != nil {
 			logger.Logger.ErrorWithStack(ErrMergeFile.Error(), err, files)
 			err = ErrUpload
@@ -80,8 +87,10 @@ func mergeFiles(dstDirName, dstFileName string, files []string) (string, error) 
 
 		_, err = io.Copy(dstFile, tempFile)
 		if err != nil {
+			tempFile.Close()
 			return "", err
 		}
+		tempFile.Close()
 	}
 
 	return dstFilePath, nil
