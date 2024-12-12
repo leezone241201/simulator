@@ -1,11 +1,11 @@
 package constant
 
-const StaticDir = "./static"
+const StaticDir = "./static/uploadFiles"
+const TempDir = "./static/temp"
 
 var AllowUploadSuffix = map[string]struct{}{
 	".zip":    {},
-	".7z":     {},
-	".rar":    {},
+	".tar":    {},
 	".tar.gz": {},
 
 	".json": {},

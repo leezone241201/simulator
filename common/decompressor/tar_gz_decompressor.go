@@ -2,9 +2,10 @@ package decompress
 
 import (
 	"compress/gzip"
-	"github/leezone/simulator/common/logger"
 	"io"
 	"os"
+
+	"github/leezone/simulator/common/logger"
 )
 
 type TarGzDecompressor struct{}

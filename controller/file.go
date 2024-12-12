@@ -8,6 +8,7 @@ import (
 	"github/leezone/simulator/common/syserror"
 	"github/leezone/simulator/service"
 	"path/filepath"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
@@ -18,6 +19,21 @@ func Upload(ctx *gin.Context) {
 	if err != nil {
 		logger.Logger.ErrorWithStack("get upload file error", err, nil)
 		response.Failure(ctx, syserror.UploadFileErrCode, syserror.ErrMap[syserror.UploadFileErrCode])
+		return
+	}
+
+	totalChunksStr := ctx.Request.FormValue("totalChunks")
+	totalChunks, err := strconv.Atoi(totalChunksStr)
+	if err != nil {
+		logger.Logger.ErrorWithStack("get totalChunks error", err, totalChunksStr)
+		response.Failure(ctx, syserror.ParameterErrCode, syserror.ErrMap[syserror.ParameterErrCode])
+		return
+	}
+
+	fileName := ctx.Request.FormValue("fileName")
+	if fileName == "" {
+		logger.Logger.ErrorWithStack("get file name error", err, fileName)
+		response.Failure(ctx, syserror.ParameterErrCode, syserror.ErrMap[syserror.ParameterErrCode])
 		return
 	}
 
@@ -34,7 +50,7 @@ func Upload(ctx *gin.Context) {
 			continue
 		}
 
-		err = service.Upload(file)
+		err = service.Upload(file, fileName, totalChunks)
 		if err != nil {
 			res = append(res, apistruct.UploadResponse{
 				FileName: file.Filename,
